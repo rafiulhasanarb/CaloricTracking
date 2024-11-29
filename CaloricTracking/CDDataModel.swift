@@ -83,6 +83,25 @@ class CDDataModel: ObservableObject {
         
     }
     
+    func addringCalories(calories: CGFloat) {
+        let newCalories = NSFetchRequest<ValueEntity>(entityName: "ValueEntity")
+        do {
+            let result = try container.viewContext.fetch(newCalories)
+            if let entity = result.first {
+                entity.ring += Float(Int(calories))
+            }
+        } catch {
+            print("Error fetching data from database: \(error)")
+        }
+        saveData()
+        fetchData()
+    }
+    
+    func addmeal(meal: BreakfastEntity) {
+        meal.addmale.toggle()
+        saveData()
+    }
+    
     func saveData() {
         do {
             try container.viewContext.save()
