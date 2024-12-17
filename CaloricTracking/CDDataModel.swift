@@ -89,6 +89,9 @@ class CDDataModel: ObservableObject {
             let result = try container.viewContext.fetch(newCalories)
             if let entity = result.first {
                 entity.ring += Float(Int(calories))
+            } else {
+                let newEntity = ValueEntity(context: container.viewContext)
+                newEntity.ring = 10
             }
         } catch {
             print("Error fetching data from database: \(error)")
@@ -99,6 +102,13 @@ class CDDataModel: ObservableObject {
     
     func addmeal(meal: BreakfastEntity) {
         meal.addmale.toggle()
+        saveData()
+    }
+    
+    func deleteOne(indexst: IndexSet) {
+        guard let index = indexst.first else { return }
+        let entity = saveBreakfastEntity[index]
+        container.viewContext.delete(entity)
         saveData()
     }
     
